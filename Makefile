@@ -17,3 +17,6 @@ internal-stage::
 
 	mkdir -p $(THEOS_STAGING_DIR)/Library/SearchLoader/Preferences
 	cp Tracks.plist $(THEOS_STAGING_DIR)/Library/SearchLoader/Preferences/SpotiSearchTracks.plist
+
+internal-after-install::
+	install.exec "killall -9 backboardd searchd AppIndexer &>/dev/null"
