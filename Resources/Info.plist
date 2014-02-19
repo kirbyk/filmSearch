@@ -7,11 +7,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>SpotiSearchTracks</string>
+	<string>imdbSearch</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.tyhoff.spotisearch.tracks</string>
+	<string>com.kirbyk.imdbsearch</string>
 	<key>CFBundleName</key>
-	<string>SpotiSearchTracks</string>
+	<string>imdbSearch</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -45,7 +45,7 @@
 	<key>MinimumOSVersion</key>
 	<string>5.0</string>
 	<key>NSPrincipalClass</key>
-	<string>TLSpotiTracksDatastore</string>
+	<string>TLimdbSearchDatastore</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

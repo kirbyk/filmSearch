@@ -1,9 +1,9 @@
-Package: com.kirby.spotisearch
-Name: SpotiSearch
+Package: com.kirbyk.imdbsearch
+Name: imdbSearch
 Depends: mobilesubstrate, preferenceloader, firmware (>= 7.0), am.theiostre.searchloader
 Version: 1.0
 Architecture: iphoneos-arm
-Description: Search for and open SpotiSearch Tracks, artists and albums from Spotlight. Requires Spotify and iOS7
-Maintainer: Kirby
-Author: Kirby
+Description: Search for and open imdbSearch, artists and albums from Spotlight. Requires Spotify and iOS7
+Maintainer: Kirbyk
+Author: Kirbyk
 Section: Tweak
