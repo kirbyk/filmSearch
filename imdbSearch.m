@@ -9,108 +9,77 @@
 #import <Foundation/Foundation.h>
 #import <SearchLoader/TLLibrary.h>
 
-#define GET_BOOL(key, default) (prefs[key] ? ((NSNumber *)prefs[key]).boolValue : default)
-#define GET_INT(key, default) (prefs[key] ? ((NSNumber *)prefs[key]).intValue : default)
-#define GET_STR(key, default) (prefs[key] ? prefs[key] : default)
-
 @interface TLimdbSearchDatastore : NSObject <TLSearchDatastore> {
-	BOOL $usingInternet;
+  BOOL $usingInternet;
 }
 @end
 
 @implementation TLimdbSearchDatastore
 - (void)performQuery:(SDSearchQuery *)query withResultsPipe:(SDSearchQuery *)results {
-	NSString *searchString = [query searchString];
-	
-	NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.kirbyk.imdbsearch.plist"];
-	int limit = GET_INT(@"TrackLimit", 5);
-	NSString * countryCode = GET_STR(@"Country", @"US");
-	NSString * trackStartRadio = GET_STR(@"SelectTrackAction", @"track");
+  NSString *searchString = [query searchString];
 
-	searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+  searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 
-	NSString *format = [NSString stringWithFormat:@"http://ws.spotify.com/search/1/track.json?q=%@", searchString];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:format] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
-	
-	TLRequireInternet(YES);
-	$usingInternet = YES;
+  NSLog(@"\n\n\n%@\n\n", searchString);
+  NSString *format = [NSString stringWithFormat:@"http://www.omdbapi.com/?s=%@", searchString];
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:format]
+                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                       timeoutInterval:5];
 
-	NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
-	[NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-		if (data != nil) {
-			NSMutableArray *searchResults = [NSMutableArray array];
-			
-			NSDictionary *root = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-			NSArray *tracks = root[@"tracks"];
+  TLRequireInternet(YES);
+  $usingInternet = YES;
 
-			int count = 0;
-			for (NSDictionary *track in tracks) {
-				if (count >= limit)
-					break;
+  NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
+  [NSURLConnection sendAsynchronousRequest:request
+                                     queue:queue
+                         completionHandler:^(NSURLResponse *response,
+                             NSData *data,
+                             NSError *error){
+    if (data != nil) {
+      NSMutableArray *searchResults = [NSMutableArray array];
 
-				/* create the album string */
-				NSDictionary *album = track[@"album"];
+      NSDictionary *root = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 
-				NSString * territories = album[@"availability"][@"territories"];
-				if ([territories rangeOfString:countryCode].location == NSNotFound) {
-					continue;
-				}
+      NSArray *movies = root[@"Search"];
+      
+      int limit = 10;
+      int count = 0;
+      for (NSDictionary *movie in movies) {
+        if (count >= limit) break;
 
-				NSString *albumString = [NSString stringWithFormat:@"%@ - %@", album[@"name"], album[@"released"]];
-				
+        NSMutableString *url = [NSMutableString stringWithString:@"imdb:///title/"];
+	[url appendString:[NSString stringWithFormat:@"%@", movie[@"imdbID"]]];
 
-				/* create the artist string */
-				NSMutableString * artistString = [NSMutableString string];
-				NSArray * artists = track[@"artists"];
-				for (int j=0; j<[artists count]; j++) {
-					NSDictionary *artist = [artists objectAtIndex:j];
+        SPSearchResult *result = [[[SPSearchResult alloc] init] autorelease];
+        [result setTitle:movie[@"Title"]];
+        [result setSubtitle:movie[@"Year"]];
+        [result setUrl:url];
 
-					if (j == [artists count] - 1)
-						[artistString appendString:[NSString stringWithFormat:@"%@", artist[@"name"]]];
-					else
-						[artistString appendString:[NSString stringWithFormat:@"%@, ", artist[@"name"]]];
-				}
+        [searchResults addObject:result];
+        count++;
+      }
 
+      TLCommitResults(searchResults, TLDomain(@"com.imdb.imdb", @"imdbSearch"), results);
+    }
 
-				SPSearchResult *result = [[[SPSearchResult alloc] init] autorelease];
-				[result setTitle:track[@"name"]];
-				[result setSubtitle:artistString];
-				[result setSummary:albumString];
+    TLRequireInternet(NO);
+    $usingInternet = NO;
+    [results storeCompletedSearch:self];
 
-				NSMutableString *url = [NSMutableString stringWithCapacity:50];
-				[url setString:track[@"href"]];
+    TLFinishQuery(results);
+  }];
 
-				if ([trackStartRadio isEqualToString:@"radio"])
-				{
-					[url insertString:@"radio:" atIndex:8];
-				}
-
-				[result setUrl:url];
-				[searchResults addObject:result];
-				count++;
-			}
-			
-			TLCommitResults(searchResults, TLDomain(@"com.imdb.imdb", @"imdbSearch"), results);
-		}
-		
-		TLRequireInternet(NO);
-		$usingInternet = NO;
-		[results storeCompletedSearch:self];
-
-		TLFinishQuery(results);
-	}];
-	
 }
 
 - (NSArray *)searchDomains {
-	return [NSArray arrayWithObject:[NSNumber numberWithInteger:TLDomain(@"com.imdb.imdb", @"imdbSearch")]];
+  return [NSArray arrayWithObject:[NSNumber numberWithInteger:TLDomain(@"com.imdb.imdb", @"imdbSearch")]];
 }
 
 - (NSString *)displayIdentifierForDomain:(NSInteger)domain {
-	return @"com.imdb.imdb";
+  return @"com.imdb.imdb";
 }
 
 - (BOOL)blockDatastoreComplete {
-	return $usingInternet;
+  return $usingInternet;
 }
 @end
