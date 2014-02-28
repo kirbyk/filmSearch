@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>imdbSearch</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.kirbyk.imdbsearch</string>
+	<string>me.kirbyk.imdbsearch</string>
 	<key>CFBundleName</key>
 	<string>imdbSearch</string>
 	<key>CFBundleInfoDictionaryVersion</key>

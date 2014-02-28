@@ -1,4 +1,4 @@
-Package: com.kirbyk.imdbsearch
+Package: me.kirbyk.imdbsearch
 Name: imdbSearch
 Depends: mobilesubstrate, preferenceloader, firmware (>= 7.0), am.theiostre.searchloader
 Version: 1.0

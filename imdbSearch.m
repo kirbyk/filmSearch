@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <SearchLoader/TLLibrary.h>
 
+#define GET_BOOL(key, default) (prefs[key] ? ((NSNumber *)prefs[key]).boolValue : default)
+#define GET_INT(key, default) (prefs[key] ? ((NSNumber *)prefs[key]).intValue : default)
+#define GET_STR(key, default) (prefs[key] ? prefs[key] : default)
+
 @interface TLimdbSearchDatastore : NSObject <TLSearchDatastore> {
   BOOL $usingInternet;
 }
@@ -18,13 +22,15 @@
 - (void)performQuery:(SDSearchQuery *)query withResultsPipe:(SDSearchQuery *)results {
   NSString *searchString = [query searchString];
 
+  NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/me.kirbyk.imdbsearch.plist"];
+  int limit = GET_INT(@"MovieLimit", 5);
+
   searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 
-  NSLog(@"\n\n\n%@\n\n", searchString);
   NSString *format = [NSString stringWithFormat:@"http://www.omdbapi.com/?s=%@", searchString];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:format]
                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                       timeoutInterval:5];
+                                       timeoutInterval:2];
 
   TLRequireInternet(YES);
   $usingInternet = YES;
@@ -42,13 +48,12 @@
 
       NSArray *movies = root[@"Search"];
       
-      int limit = 10;
       int count = 0;
       for (NSDictionary *movie in movies) {
         if (count >= limit) break;
 
         NSMutableString *url = [NSMutableString stringWithString:@"imdb:///title/"];
-	[url appendString:[NSString stringWithFormat:@"%@", movie[@"imdbID"]]];
+        [url appendString:[NSString stringWithFormat:@"%@", movie[@"imdbID"]]];
 
         SPSearchResult *result = [[[SPSearchResult alloc] init] autorelease];
         [result setTitle:movie[@"Title"]];
