@@ -26,7 +26,7 @@
 			<key>cell</key>
 			<string>PSLinkListCell</string>
 			<key>defaults</key>
-			<string>com.kirbyk.imdbsearch</string>
+			<string>me.kirbyk.imdbsearch</string>
 			<key>default</key>
 			<integer>5</integer>
 			<key>detail</key>
@@ -34,7 +34,7 @@
 			<key>label</key>
 			<string>Limit</string>
 			<key>key</key>
-			<string>ArtistLimit</string>
+			<string>MovieLimit</string>
 			<key>validTitles</key>
 			<array>
 				<string>1</string>
