@@ -7,11 +7,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>imdbSearch</string>
+	<string>filmSearch</string>
 	<key>CFBundleIdentifier</key>
-	<string>me.kirbyk.imdbsearch</string>
+	<string>me.kirbyk.filmsearch</string>
 	<key>CFBundleName</key>
-	<string>imdbSearch</string>
+	<string>filmSearch</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -45,7 +45,7 @@
 	<key>MinimumOSVersion</key>
 	<string>5.0</string>
 	<key>NSPrincipalClass</key>
-	<string>TLimdbSearchDatastore</string>
+	<string>TLfilmSearchDatastore</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

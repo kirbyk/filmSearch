@@ -1,9 +1,9 @@
-Package: me.kirbyk.imdbsearch
-Name: imdbSearch
+Package: me.kirbyk.filmsearch
+Name: filmSearch
 Depends: mobilesubstrate, preferenceloader, firmware (>= 7.0), am.theiostre.searchloader
 Version: 1.0
 Architecture: iphoneos-arm
-Description: Search for and open imdbSearch, artists and albums from Spotlight. Requires Spotify and iOS7
+Description: Search for and open filmSearch, artists and albums from Spotlight. Requires Spotify and iOS7
 Maintainer: Kirbyk
 Author: Kirbyk
 Section: Tweak

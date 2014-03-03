@@ -10,7 +10,7 @@
 		<key>icon</key>
 		<string>Music.png</string>
 		<key>label</key>
-		<string>imdbSearch</string>
+		<string>filmSearch</string>
 	</dict>
 
 	<key>items</key>
@@ -26,7 +26,7 @@
 			<key>cell</key>
 			<string>PSLinkListCell</string>
 			<key>defaults</key>
-			<string>me.kirbyk.imdbsearch</string>
+			<string>me.kirbyk.filmsearch</string>
 			<key>default</key>
 			<integer>5</integer>
 			<key>detail</key>
@@ -61,6 +61,6 @@
 	</array>
 
 	<key>title</key>
-	<string>imdbSearch</string>
+	<string>filmSearch</string>
 </dict>
 </plist>

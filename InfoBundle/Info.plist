@@ -5,12 +5,12 @@
 	<key>LSTypeIsPackage</key>
 	<true />
 	<key>SPCategory</key>
-	<string>imdbSearch</string>
+	<string>filmSearch</string>
 	<key>SPDisplayIdentifier</key>
-	<string>com.imdb.imdb</string>
+	<string>com.film.film</string>
 	<key>TLIsSearchBundle</key>
 	<true />
 	<key>TLDisplayName</key>
-	<string>imdbSearch</string>
+	<string>filmSearch</string>
 </dict>
 </plist>

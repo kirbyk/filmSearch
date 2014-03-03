@@ -2,21 +2,21 @@ export ARCHS = armv7 arm64
 
 include theos/makefiles/common.mk
 
-BUNDLE_NAME = imdbSearch
-imdbSearch_FILES = imdbSearch.m
-imdbSearch_INSTALL_PATH = /Library/SearchLoader/SearchBundles
-imdbSearch_BUNDLE_EXTENSION = searchBundle
-imdbSearch_LDFLAGS = -lspotlight
-imdbSearch_PRIVATE_FRAMEWORKS = Search
+BUNDLE_NAME = filmSearch
+filmSearch_FILES = filmSearch.m
+filmSearch_INSTALL_PATH = /Library/SearchLoader/SearchBundles
+filmSearch_BUNDLE_EXTENSION = searchBundle
+filmSearch_LDFLAGS = -lspotlight
+filmSearch_PRIVATE_FRAMEWORKS = Search
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 
 internal-stage::
 	mkdir -p $(THEOS_STAGING_DIR)/Library/SearchLoader/Applications
-	cp -r InfoBundle/ $(THEOS_STAGING_DIR)/Library/SearchLoader/Applications/imdbSearch.bundle
+	cp -r InfoBundle/ $(THEOS_STAGING_DIR)/Library/SearchLoader/Applications/filmSearch.bundle
 
 	mkdir -p $(THEOS_STAGING_DIR)/Library/SearchLoader/Preferences
-	cp imdbSearch.plist $(THEOS_STAGING_DIR)/Library/SearchLoader/Preferences/imdbSearch.plist
+	cp filmSearch.plist $(THEOS_STAGING_DIR)/Library/SearchLoader/Preferences/filmSearch.plist
 
 internal-after-install::
 	install.exec "killall -9 backboardd searchd AppIndexer &>/dev/null"

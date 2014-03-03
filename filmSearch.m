@@ -1,6 +1,6 @@
 //
-//  imdbSearch.m
-//  imdbSearch
+//  filmSearch.m
+//  filmSearch
 //
 //  Created by Kirbyk on 18.02.2014.
 //  Copyright (c) 2014 Kirbyk. All rights reserved.
@@ -13,16 +13,16 @@
 #define GET_INT(key, default) (prefs[key] ? ((NSNumber *)prefs[key]).intValue : default)
 #define GET_STR(key, default) (prefs[key] ? prefs[key] : default)
 
-@interface TLimdbSearchDatastore : NSObject <TLSearchDatastore> {
+@interface TLfilmSearchDatastore : NSObject <TLSearchDatastore> {
   BOOL $usingInternet;
 }
 @end
 
-@implementation TLimdbSearchDatastore
+@implementation TLfilmSearchDatastore
 - (void)performQuery:(SDSearchQuery *)query withResultsPipe:(SDSearchQuery *)results {
   NSString *searchString = [query searchString];
 
-  NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/me.kirbyk.imdbsearch.plist"];
+  NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/me.kirbyk.filmsearch.plist"];
   int limit = GET_INT(@"MovieLimit", 5);
 
   searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
@@ -52,8 +52,8 @@
       for (NSDictionary *movie in movies) {
         if (count >= limit) break;
 
-        NSMutableString *url = [NSMutableString stringWithString:@"imdb:///title/"];
-        [url appendString:[NSString stringWithFormat:@"%@", movie[@"imdbID"]]];
+        NSMutableString *url = [NSMutableString stringWithString:@"film:///title/"];
+        [url appendString:[NSString stringWithFormat:@"%@", movie[@"filmID"]]];
 
         SPSearchResult *result = [[[SPSearchResult alloc] init] autorelease];
         [result setTitle:movie[@"Title"]];
@@ -64,7 +64,7 @@
         count++;
       }
 
-      TLCommitResults(searchResults, TLDomain(@"com.imdb.imdb", @"imdbSearch"), results);
+      TLCommitResults(searchResults, TLDomain(@"com.film.film", @"filmSearch"), results);
     }
 
     TLRequireInternet(NO);
@@ -77,11 +77,11 @@
 }
 
 - (NSArray *)searchDomains {
-  return [NSArray arrayWithObject:[NSNumber numberWithInteger:TLDomain(@"com.imdb.imdb", @"imdbSearch")]];
+  return [NSArray arrayWithObject:[NSNumber numberWithInteger:TLDomain(@"com.film.film", @"filmSearch")]];
 }
 
 - (NSString *)displayIdentifierForDomain:(NSInteger)domain {
-  return @"com.imdb.imdb";
+  return @"com.film.film";
 }
 
 - (BOOL)blockDatastoreComplete {
