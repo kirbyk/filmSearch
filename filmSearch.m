@@ -53,7 +53,7 @@
         if (count >= limit) break;
 
         NSMutableString *url = [NSMutableString stringWithString:@"imdb:///title/"];
-        [url appendString:[NSString stringWithFormat:@"%@", movie[@"filmID"]]];
+        [url appendString:[NSString stringWithFormat:@"%@", movie[@"imdbID"]]];
 
         SPSearchResult *result = [[[SPSearchResult alloc] init] autorelease];
         [result setTitle:movie[@"Title"]];
