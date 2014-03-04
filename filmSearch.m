@@ -52,7 +52,7 @@
       for (NSDictionary *movie in movies) {
         if (count >= limit) break;
 
-        NSMutableString *url = [NSMutableString stringWithString:@"film:///title/"];
+        NSMutableString *url = [NSMutableString stringWithString:@"imdb:///title/"];
         [url appendString:[NSString stringWithFormat:@"%@", movie[@"filmID"]]];
 
         SPSearchResult *result = [[[SPSearchResult alloc] init] autorelease];
